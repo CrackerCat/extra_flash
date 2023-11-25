@@ -268,6 +268,9 @@ class FlashTool(Tk):
                                     print("失败!")
                             else:
                                 print("失败!")
+            if os.path.exists(os.path.join(os.getcwd(), 'images', 'preloader_raw.img')):
+                for i in ['preloader_a', 'preloader_a', 'preloader1', 'preloader2']:
+                    call(f"fastboot flash {i} images{os.sep}preloader_raw.img")
             if self.sweep_data:
                 call('fastboot erase userdata')
                 call('fastboot erase userdata')
