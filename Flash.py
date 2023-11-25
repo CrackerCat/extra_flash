@@ -35,7 +35,7 @@ def run_command(command, kz='Y', sh_state=False):
 
 def call(exe, kz='Y', out=0, sh_state=False, sp=0):
     if kz == "Y":
-        cmd = f'{getcwd()}{sep}{exe}'
+        cmd = f'{getcwd()}{sep}bin{sep}{exe}'
     else:
         cmd = exe
     if osname != 'posix':
@@ -107,6 +107,8 @@ class FlashTool(Tk):
         self.patch_boot = IntVar()
         self.device = StringVar()
         self.device.set("Unknown")
+        self.device_code = StringVar()
+        self.slot = IntVar()
         self.sub_win = LabelFrame(self, text='功能')
         self.notepad = ttk.Notebook(self.sub_win)
         self.notepad.pack(fill=BOTH, expand=True)
@@ -151,11 +153,12 @@ class FlashTool(Tk):
         frame = LabelFrame(self.flash, text="设备信息")
         Label(frame, textvariable=self.device, font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
-        frame = LabelFrame(self.flash, text="刷机选项")
-        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
+        self.frame = LabelFrame(self.flash, text="刷机选项")
+        Checkbutton(self.frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
                     style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
-        frame.pack(padx=5, pady=5)
-        Button(self.flash, text="开始刷机").pack(side=BOTTOM, padx=4, pady=10, fill=X)
+        self.frame.pack(padx=5, pady=5)
+        self.flash_button = Button(self.flash, text="开始刷机", command=lambda: cz(self.flash_my_rom))
+        self.flash_button.pack(side=BOTTOM, padx=4, pady=10, fill=X)
 
     def init_sub_official_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
@@ -165,7 +168,8 @@ class FlashTool(Tk):
         Label(frame, textvariable=self.device, font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
         frame = LabelFrame(self.flash, text="刷机选项")
-        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0, style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
+        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
+                    style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
         cs = 0
         for v in ['删除全部数据', '保留用户数据', '删除数据并上锁BL']:
             cs += 1
@@ -185,10 +189,16 @@ class FlashTool(Tk):
         pass
 
     def flash_my_rom(self):
-        pass
-    def get_device_info(self):
-        pass
+        self.flash_button.config(state='disabled', text="正在等待设备")
+        call("fastboot getvar product")
+        self.flash_button.config(state='normal', text="开始刷机")
 
+    def get_device_info(self):
+        device = run_command('fastboot getvar product')
+        lot_count = run_command("fastboot getvar slot-count")
+        self.device.set(f"""设备代号：{device}\nSlot数量:{lot_count}""")
+        self.device_code.set(device)
+        self.slot.set(int(lot_count))
 
 
 if __name__ == '__main__':
