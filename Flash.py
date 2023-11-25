@@ -215,6 +215,7 @@ class FlashTool(Tk):
             device_id = run_command("fastboot devices").strip().split()[0]
         except IndexError:
             self.enable()
+            print("未发现设备")
             return
 
         print(f"发现设备:{device_id}")
@@ -230,6 +231,7 @@ class FlashTool(Tk):
             device_id = run_command("fastboot devices").strip().split()[0]
         except IndexError:
             self.enable()
+            print("未发现设备")
             return
         print(f"发现设备:{device_id}")
         try:
