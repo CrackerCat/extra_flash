@@ -150,6 +150,10 @@ class FlashTool(Tk):
         sys.stdout = StdoutRedirector(self.log)
         sys.stderr = StdoutRedirector(self.log)
 
+    def flash_official(self):
+        pass
+    def flash_my_rom(self):
+        pass
 
 if __name__ == '__main__':
     app = FlashTool()
