@@ -50,10 +50,10 @@ def call(exe, kz='Y', out=0, sh_state=False, sp=0):
         for i in iter(ret.stdout.readline, b""):
             if out == 0:
                 try:
-                    outt = i.decode("utf-8").strip()
+                    out_t = i.decode("utf-8").strip()
                 except UnicodeDecodeError:
-                    outt = i.decode("gbk").strip()
-                print(outt)
+                    out_t = i.decode("gbk").strip()
+                print(out_t)
     except subprocess.CalledProcessError as e:
         print(e.__str__())
     ret.wait()
@@ -91,7 +91,8 @@ class utils:
     def __init__(self):
         pass
 
-    def install_driver(self):
+    @staticmethod
+    def install_driver():
         for i in ['Win_Driver\\Google\\Driver\\android_winusb.inf', 'Win_Driver\\Qualcomm\\Driver\\qcser.inf']:
             call(f"pnputil /add-driver {i}", kz='N')
 
@@ -99,6 +100,7 @@ class utils:
 class FlashTool(Tk):
     def __init__(self):
         super().__init__()
+        self.flash_button = None
         self.flash_cz = IntVar()
         self.flash_cz.set(1)
         sv_ttk.use_dark_theme()
@@ -175,7 +177,7 @@ class FlashTool(Tk):
             cs += 1
             ttk.Radiobutton(self.frame, text=v, variable=self.flash_cz, value=cs).pack(side=TOP, padx=2, pady=2)
         self.frame.pack(padx=5, pady=5)
-        self.flash_button = Button(self.flash, text="开始刷机", command=lambda : cz(self.flash_official))
+        self.flash_button = Button(self.flash, text="开始刷机", command=lambda: cz(self.flash_official))
         self.flash_button.pack(side=BOTTOM, padx=4, pady=10, fill=X)
 
     def init_log(self):
