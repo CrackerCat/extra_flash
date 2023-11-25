@@ -82,6 +82,7 @@ class FlashTool(Tk):
         self.flash = ttk.Frame(self.notepad)
         self.notepad.add(self.flash, text="刷机")
         self.driver = ttk.Frame(self.notepad)
+        self.init_driver()
         self.notepad.add(self.driver, text="安装驱动")
         self.log_win = LabelFrame(self, text='日志')
         self.log = Text(self.log_win, width=50, height=20)
@@ -107,6 +108,10 @@ class FlashTool(Tk):
 
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
+
+    def init_driver(self):
+        Label(self.driver, text="驱动安装", font=(None, 20)).pack()
+        Button(self.driver, text='')
 
     def init_sub_my_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
