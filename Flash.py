@@ -116,7 +116,7 @@ class FlashTool(Tk):
         self.log_win = LabelFrame(self, text='日志')
         self.log = Text(self.log_win, width=50, height=20)
         self.init_log()
-        if self.code:
+        if not self.code:
             self.init_sub_my_rom()
         else:
             self.init_sub_official_rom()
@@ -144,8 +144,15 @@ class FlashTool(Tk):
 
     def init_sub_my_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
-        Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 15)).pack()
+        Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
+        frame = LabelFrame(self.flash, text="设备信息")
+        frame.pack(padx=5, pady=5)
+        frame = LabelFrame(self.flash, text="刷机选项")
+        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
+                    style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
+        frame.pack(padx=5, pady=5)
+        Button(self.flash, text="开始刷机").pack(side=BOTTOM, padx=4, pady=10, fill=X)
 
     def init_sub_official_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
