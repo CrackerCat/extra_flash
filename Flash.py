@@ -25,7 +25,7 @@ def run_command(command, kz='Y', sh_state=False):
     else:
         cmd = command
     try:
-        ret = subprocess.check_output(cmd, shell=sh_state, stderr=subprocess.DEVNULL)
+        ret = subprocess.check_output(cmd, shell=sh_state, stderr=subprocess.STDOUT)
         output = ret
     except subprocess.CalledProcessError as e:
         output = e
@@ -220,8 +220,11 @@ class FlashTool(Tk):
     def get_device_info(self):
         device = run_command('fastboot getvar product')
         lot_count = run_command("fastboot getvar slot-count")
-        print(device)
-        self.device.set(f"""设备代号：{device}\nSlot数量:{lot_count}""")
+        device = device.split("\n")[0].split(': ')[1].strip()
+        lot_count = lot_count.split("\n")[0].split(': ')[1].strip()
+        if not lot_count:
+            lot_count = 0
+        self.device.set(f"""设备代号：{device}\n\nSlot数量:{lot_count}""")
         self.device_code.set(device)
         self.slot.set(int(lot_count))
 
