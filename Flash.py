@@ -21,7 +21,7 @@ def cz(func, *args):
 
 def run_command(command, kz='Y', sh_state=False):
     if kz == "Y":
-        cmd = f'{getcwd()}{sep}{command}'
+        cmd = f'{getcwd()}{sep}bin{sep}{command}'
     else:
         cmd = command
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=sh_state)
@@ -189,9 +189,13 @@ class FlashTool(Tk):
         pass
 
     def flash_my_rom(self):
-        self.flash_button.config(state='disabled', text="正在等待设备")
+        self.flash_button.configure(state='disabled', text="正在等待设备")
+        for i in self.frame.winfo_children():
+            i.configure(state='disabled')
         call("fastboot getvar product")
         self.get_device_info()
+        for i in self.frame.winfo_children():
+            i.configure(state='normal')
         self.flash_button.config(state='normal', text="开始刷机")
 
     def get_device_info(self):
