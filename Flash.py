@@ -120,7 +120,7 @@ class FlashTool(Tk):
         self.log_win = LabelFrame(self, text='日志')
         self.log = Text(self.log_win, width=50, height=20)
         self.init_log()
-        if not self.code:
+        if self.code:
             self.init_sub_my_rom()
         else:
             self.init_sub_official_rom()
@@ -167,15 +167,16 @@ class FlashTool(Tk):
         frame = LabelFrame(self.flash, text="设备信息")
         Label(frame, textvariable=self.device, font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
-        frame = LabelFrame(self.flash, text="刷机选项")
-        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
+        self.frame = LabelFrame(self.flash, text="刷机选项")
+        Checkbutton(self.frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
                     style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
         cs = 0
         for v in ['删除全部数据', '保留用户数据', '删除数据并上锁BL']:
             cs += 1
-            ttk.Radiobutton(frame, text=v, variable=self.flash_cz, value=cs).pack(side=TOP, padx=2, pady=2)
-        frame.pack(padx=5, pady=5)
-        Button(self.flash, text="开始刷机").pack(side=BOTTOM, padx=4, pady=10, fill=X)
+            ttk.Radiobutton(self.frame, text=v, variable=self.flash_cz, value=cs).pack(side=TOP, padx=2, pady=2)
+        self.frame.pack(padx=5, pady=5)
+        self.flash_button = Button(self.flash, text="开始刷机", command=lambda : cz(self.flash_official))
+        self.flash_button.pack(side=BOTTOM, padx=4, pady=10, fill=X)
 
     def init_log(self):
         self.log.pack(padx=5, pady=5)
@@ -186,7 +187,17 @@ class FlashTool(Tk):
         sys.stderr = StdoutRedirector(self.log)
 
     def flash_official(self):
-        pass
+        self.flash_button.configure(state='disabled', text="正在等待设备")
+        for i in self.frame.winfo_children():
+            i.configure(state='disabled')
+        call("fastboot getvar product")
+        try:
+            self.get_device_info()
+        except ValueError as e:
+            print(e.__str__())
+        for i in self.frame.winfo_children():
+            i.configure(state='normal')
+        self.flash_button.config(state='normal', text="开始刷机")
 
     def flash_my_rom(self):
         self.flash_button.configure(state='disabled', text="正在等待设备")
