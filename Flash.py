@@ -81,6 +81,7 @@ class FlashTool(Tk):
         Center_Show(self)
         self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
         self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
+        print("欢迎！")
 
     @staticmethod
     def get_code():
