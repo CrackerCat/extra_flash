@@ -78,7 +78,7 @@ class FlashTool(Tk):
         self.title('MIO-KITCHEN-FLASH-TOOL')
         self.sub_win = LabelFrame(self, text='功能')
         self.notepad = ttk.Notebook(self.sub_win)
-        self.notepad.pack(fill=BOTH)
+        self.notepad.pack(fill=BOTH, expand=True)
         self.flash = ttk.Frame(self.notepad)
         self.notepad.add(self.flash, text="刷机")
         self.driver = ttk.Frame(self.notepad)
@@ -93,7 +93,7 @@ class FlashTool(Tk):
         self.controls()
         Center_Show(self)
         self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
-        self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
+        self.log_win.pack(fill=BOTH, side=LEFT, expand=True, pady=5)
         print("欢迎！")
 
     @staticmethod
@@ -128,7 +128,7 @@ class FlashTool(Tk):
         self.log.pack(padx=5, pady=5)
         frame = Frame(self.log_win)
         Button(frame, text='清空', command=lambda: cz(self.log.delete, 1.0, END)).pack(side=LEFT, padx=5, pady=5)
-        frame.pack(fill=X, side=BOTTOM)
+        frame.pack(side=BOTTOM)
         sys.stdout = StdoutRedirector(self.log)
         sys.stderr = StdoutRedirector(self.log)
 
