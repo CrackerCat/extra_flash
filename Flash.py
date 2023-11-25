@@ -152,8 +152,10 @@ class FlashTool(Tk):
 
     def flash_official(self):
         pass
+
     def flash_my_rom(self):
         pass
+
 
 if __name__ == '__main__':
     app = FlashTool()
