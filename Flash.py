@@ -15,7 +15,7 @@ def cz(func, *args):
     Thread(target=func, args=args, daemon=True).start()
 
 
-def call(exe, kz='Y', out=0, shstate=False, sp=0):
+def call(exe, kz='Y', out=0, sh_state=False, sp=0):
     if kz == "Y":
         cmd = f'{getcwd()}{sep}{exe}'
     else:
@@ -27,15 +27,15 @@ def call(exe, kz='Y', out=0, shstate=False, sp=0):
             cmd = cmd.split()
         conf = 0
     try:
-        ret = subprocess.Popen(cmd, shell=shstate, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        ret = subprocess.Popen(cmd, shell=sh_state, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT, creationflags=conf)
         for i in iter(ret.stdout.readline, b""):
             if out == 0:
                 print(i.decode("utf-8", "ignore").strip())
     except subprocess.CalledProcessError as e:
-        for i in iter(e.stdout.readline, b""):
-            if out == 0:
-                print(e.decode("utf-8", "ignore").strip())
+        print(e.__str__())
+    else:
+        ret = None
     ret.wait()
     return ret.returncode
 
@@ -85,7 +85,8 @@ class FlashTool(Tk):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
 
     def init_sub(self):
-        pass
+        frame = LabelFrame(self.sub_win)
+        frame.pack(padx=5, pady=5)
 
     def init_log(self):
         self.log.pack(padx=5, pady=5)
