@@ -247,8 +247,8 @@ class FlashTool(Tk):
                 for f in files:
                     if f in ['preloader_raw.img']:
                         continue
+                    print(f"正在刷入：{f}")
                     if f.endswith('.img'):
-                        print(f"正在刷入：{f}")
                         if self.slot.get() == 2 or self.slot.get() > 2:
                             if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
                                 if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
@@ -263,6 +263,9 @@ class FlashTool(Tk):
                             if self.slot.get() == 2 or self.slot.get() > 2:
                                 if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
                                     print("失败!")
+                            else:
+                                print("失败!")
+
 
         else:
             print(f'此ROM是为 {self.code} 制作，但你的设备是 {self.device_code}')
