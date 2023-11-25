@@ -119,6 +119,9 @@ class FlashTool(Tk):
         self.notepad.pack(fill=BOTH, expand=True)
         self.flash = ttk.Frame(self.notepad)
         self.notepad.add(self.flash, text="刷机")
+        self.fast_cmd = ttk.Frame(self.notepad)
+        self.init_fast_cmd()
+        self.notepad.add(self.fast_cmd, text="快捷命令")
         self.driver = ttk.Frame(self.notepad)
         self.init_driver()
         self.notepad.add(self.driver, text="安装驱动")
@@ -143,6 +146,10 @@ class FlashTool(Tk):
                 return f.read().strip()
         else:
             return None
+
+    def init_fast_cmd(self):
+        Label(self.fast_cmd, text="快捷命令", font=(None, 20)).pack(padx=5, pady=5)
+        Button(self.fast_cmd, text='FB重启手机', width=20, command=lambda: cz(call, 'fastboot reboot')).pack(padx=5, pady=5)
 
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
