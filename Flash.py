@@ -191,6 +191,7 @@ class FlashTool(Tk):
     def flash_my_rom(self):
         self.flash_button.config(state='disabled', text="正在等待设备")
         call("fastboot getvar product")
+        self.get_device_info()
         self.flash_button.config(state='normal', text="开始刷机")
 
     def get_device_info(self):
