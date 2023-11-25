@@ -8,7 +8,7 @@ from tkinter import ttk
 import sv_ttk
 from tkinter import *
 from tkinter.ttk import *
-
+import zipfile
 osname = os.name
 bin_dir = os.path.join(os.getcwd(), 'bin')
 if osname == 'nt':
