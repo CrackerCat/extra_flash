@@ -84,16 +84,16 @@ class FlashTool(Tk):
         self.driver = ttk.Frame(self.notepad)
         self.notepad.add(self.driver, text="安装驱动")
         self.log_win = LabelFrame(self, text='日志')
-        self.log = Text(self.log_win)
+        self.log = Text(self.log_win, width=50, height=20)
         self.init_log()
         if self.code:
             self.init_sub_my_rom()
         else:
             self.init_sub_official_rom()
         self.controls()
-        Center_Show(self)
         self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
         self.log_win.pack(fill=BOTH, side=LEFT, expand=True, pady=5)
+        Center_Show(self)
         print("欢迎！")
 
     @staticmethod
