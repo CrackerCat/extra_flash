@@ -193,7 +193,10 @@ class FlashTool(Tk):
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
         call("fastboot getvar product")
-        self.get_device_info()
+        try:
+            self.get_device_info()
+        except ValueError as e:
+            print(e.__str__())
         for i in self.frame.winfo_children():
             i.configure(state='normal')
         self.flash_button.config(state='normal', text="开始刷机")
