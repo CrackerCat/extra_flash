@@ -35,11 +35,13 @@ def call(exe, kz='Y', out=0, sh_state=False, sp=0):
                                stderr=subprocess.STDOUT, creationflags=conf)
         for i in iter(ret.stdout.readline, b""):
             if out == 0:
-                print(i.decode("utf-8", "ignore").strip())
+                try:
+                    outt = i.decode("utf-8").strip()
+                except UnicodeDecodeError:
+                    outt = i.decode("gbk").strip()
+                print(outt)
     except subprocess.CalledProcessError as e:
         print(e.__str__())
-    else:
-        ret = None
     ret.wait()
     return ret.returncode
 
@@ -69,6 +71,15 @@ class Center_Show(object):
         self.master.geometry('+{}+{}'.
                              format(int(self.master.winfo_screenwidth() / 2 - self.master.winfo_width() / 2),
                                     int(self.master.winfo_screenheight() / 2 - self.master.winfo_height() / 2)))
+
+
+class utils:
+    def __init__(self):
+        pass
+
+    def install_driver(self):
+        for i in ['Win_Driver\\Google\\Driver\\android_winusb.inf', 'Win_Driver\\Qualcomm\\Driver\\qcser.inf']:
+            call(f"pnputil /add-driver {i}", kz='N')
 
 
 class FlashTool(Tk):
@@ -113,7 +124,7 @@ class FlashTool(Tk):
 
     def init_driver(self):
         Label(self.driver, text="驱动安装", font=(None, 20)).pack()
-        Button(self.driver, text='刷机驱动', width=20).pack(padx=5, pady=5)
+        Button(self.driver, text='刷机驱动', width=20, command=lambda: utils().install_driver()).pack(padx=5, pady=5)
 
     def init_sub_my_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
