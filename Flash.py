@@ -24,8 +24,11 @@ def run_command(command, kz='Y', sh_state=False):
         cmd = f'{getcwd()}{sep}bin{sep}{command}'
     else:
         cmd = command
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=sh_state)
-    output, error = process.communicate()
+    try:
+        ret = subprocess.check_output(cmd, shell=sh_state, stderr=subprocess.DEVNULL)
+        output = ret
+    except subprocess.CalledProcessError as e:
+        output = e
     try:
         output_ = output.decode('utf-8').strip()
     except UnicodeDecodeError:
@@ -192,7 +195,7 @@ class FlashTool(Tk):
         self.flash_button.configure(state='disabled', text="正在等待设备")
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
-        call("fastboot getvar product")
+        call("fastboot devices")
         try:
             self.get_device_info()
         except ValueError as e:
@@ -205,7 +208,7 @@ class FlashTool(Tk):
         self.flash_button.configure(state='disabled', text="正在等待设备")
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
-        call("fastboot getvar product")
+        call("fastboot devices")
         try:
             self.get_device_info()
         except ValueError as e:
@@ -217,6 +220,7 @@ class FlashTool(Tk):
     def get_device_info(self):
         device = run_command('fastboot getvar product')
         lot_count = run_command("fastboot getvar slot-count")
+        print(device)
         self.device.set(f"""设备代号：{device}\nSlot数量:{lot_count}""")
         self.device_code.set(device)
         self.slot.set(int(lot_count))
