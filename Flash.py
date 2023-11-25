@@ -111,7 +111,7 @@ class FlashTool(Tk):
 
     def init_driver(self):
         Label(self.driver, text="驱动安装", font=(None, 20)).pack()
-        Button(self.driver, text='')
+        Button(self.driver, text='刷机驱动',width=20).pack(padx=5,pady=5)
 
     def init_sub_my_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
