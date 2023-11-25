@@ -19,6 +19,20 @@ def cz(func, *args):
     Thread(target=func, args=args, daemon=True).start()
 
 
+def run_command(command, kz='Y', sh_state=False):
+    if kz == "Y":
+        cmd = f'{getcwd()}{sep}{command}'
+    else:
+        cmd = command
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=sh_state)
+    output, error = process.communicate()
+    try:
+        output_ = output.decode('utf-8').strip()
+    except UnicodeDecodeError:
+        output_ = output.decode('gbk').strip()
+    return output_
+
+
 def call(exe, kz='Y', out=0, sh_state=False, sp=0):
     if kz == "Y":
         cmd = f'{getcwd()}{sep}{exe}'
