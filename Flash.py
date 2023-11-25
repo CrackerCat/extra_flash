@@ -114,6 +114,7 @@ class FlashTool(Tk):
         self.device.set("Unknown")
         self.device_code = StringVar()
         self.slot = IntVar()
+        self.sweep_data = IntVar()
         self.sub_win = LabelFrame(self, text='功能')
         self.notepad = ttk.Notebook(self.sub_win)
         self.notepad.pack(fill=BOTH, expand=True)
@@ -168,6 +169,8 @@ class FlashTool(Tk):
         frame.pack(padx=5, pady=5)
         self.frame = LabelFrame(self.flash, text="刷机选项")
         Checkbutton(self.frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
+                    style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
+        Checkbutton(self.frame, text="删除用户数据", variable=self.sweep_data, onvalue=1, offvalue=0,
                     style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
         self.frame.pack(padx=5, pady=5)
         self.flash_button = Button(self.flash, text="开始刷机", command=lambda: cz(self.flash_my_rom))
