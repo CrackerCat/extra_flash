@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter.ttk import *
 
 osname = os.name
+bin_dir = os.path.join(os.getcwd(), 'bin')
 
 
 def cz(func, *args):
