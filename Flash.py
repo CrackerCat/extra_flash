@@ -5,7 +5,7 @@ from os import getcwd, sep
 from threading import Thread
 from tkinter import ttk
 
-from ttkbootstrap.constants import *
+import sv_ttk
 from tkinter import *
 from tkinter.ttk import *
 
@@ -101,6 +101,7 @@ class FlashTool(Tk):
         super().__init__()
         self.flash_cz = IntVar()
         self.flash_cz.set(1)
+        sv_ttk.use_dark_theme()
         self.code = self.get_code()
         self.title('MIO-KITCHEN-FLASH-TOOL')
         self.patch_boot = IntVar()
@@ -150,13 +151,14 @@ class FlashTool(Tk):
         frame = LabelFrame(self.flash, text="ROM信息")
         Label(frame, text=f"小米官方ROM", font=(None, 15)).pack()
         frame.pack(padx=5, pady=5)
-        ttk.Checkbutton(frame, text="修补Boot", textvariable=self.patch_boot, onvalue=1, offvalue=0).pack(padx=2, pady=2)
         frame = LabelFrame(self.flash, text="刷机选项")
+        Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0, style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
         cs = 0
-        for v in ['删除全部数据并刷机', '保留用户数据并刷机', '删除全部数据并刷机和上锁BL']:
+        for v in ['删除全部数据', '保留用户数据', '删除数据并上锁BL']:
             cs += 1
             ttk.Radiobutton(frame, text=v, variable=self.flash_cz, value=cs).pack(side=TOP, padx=2, pady=2)
         frame.pack(padx=5, pady=5)
+        Button(self.flash, text="开始刷机").pack(side=BOTTOM, padx=4, pady=10, fill=X)
 
     def init_log(self):
         self.log.pack(padx=5, pady=5)
