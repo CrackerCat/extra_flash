@@ -277,7 +277,7 @@ class FlashTool(Tk):
             if self.slot.get() == 2 or self.slot.get() > 2:
                 call('fastboot set_active a')
             call('fastboot reboot')
-            print("刷入完成！")
+            print("刷机完毕 感谢使用MIO-KITCHEN工具!")
 
 
         else:
