@@ -149,7 +149,8 @@ class FlashTool(Tk):
 
     def init_fast_cmd(self):
         Label(self.fast_cmd, text="快捷命令", font=(None, 20)).pack(padx=5, pady=5)
-        Button(self.fast_cmd, text='FB重启手机', width=20, command=lambda: cz(call, 'fastboot reboot')).pack(padx=5, pady=5)
+        Button(self.fast_cmd, text='FB重启手机', width=20, command=lambda: cz(call, 'fastboot reboot')).pack(padx=5,
+                                                                                                             pady=5)
 
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
@@ -198,33 +199,44 @@ class FlashTool(Tk):
         sys.stdout = StdoutRedirector(self.log)
         sys.stderr = StdoutRedirector(self.log)
 
-    def flash_official(self):
+    def disable(self):
         self.flash_button.configure(state='disabled', text="正在等待设备")
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
-        device_id = run_command("fastboot devices").strip().split()[0]
-        print(f"发现设备:{device_id}")
-        try:
-            self.get_device_info()
-        except ValueError as e:
-            print(e.__str__())
+
+    def enable(self):
         for i in self.frame.winfo_children():
             i.configure(state='normal')
         self.flash_button.config(state='normal', text="开始刷机")
 
-    def flash_my_rom(self):
-        self.flash_button.configure(state='disabled', text="正在等待设备")
-        for i in self.frame.winfo_children():
-            i.configure(state='disabled')
-        device_id = run_command("fastboot devices").strip().split()[0]
+    def flash_official(self):
+        self.disable()
+        try:
+            device_id = run_command("fastboot devices").strip().split()[0]
+        except IndexError:
+            self.enable()
+            return
+
         print(f"发现设备:{device_id}")
         try:
             self.get_device_info()
         except ValueError as e:
             print(e.__str__())
-        for i in self.frame.winfo_children():
-            i.configure(state='normal')
-        self.flash_button.config(state='normal', text="开始刷机")
+        self.enable()
+
+    def flash_my_rom(self):
+        self.disable()
+        try:
+            device_id = run_command("fastboot devices").strip().split()[0]
+        except IndexError:
+            self.enable()
+            return
+        print(f"发现设备:{device_id}")
+        try:
+            self.get_device_info()
+        except ValueError as e:
+            print(e.__str__())
+        self.enable()
 
     def get_device_info(self):
         device = run_command('fastboot getvar product')
