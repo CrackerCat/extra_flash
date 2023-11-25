@@ -259,13 +259,10 @@ class FlashTool(Tk):
                     elif f.endswith('.zst'):
                         call(f'zstd --rm -d images/{f} -o images/{f[:-4]}')
                         f = f[:-4]
-                        if self.slot.get() == 2 or self.slot.get() > 2:
-                            if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
-                                if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
+                        if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
+                            if self.slot.get() == 2 or self.slot.get() > 2:
+                                if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
                                     print("失败!")
-                        else:
-                            if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
-                                print("失败!")
 
         else:
             print(f'此ROM是为 {self.code} 制作，但你的设备是 {self.device_code}')
