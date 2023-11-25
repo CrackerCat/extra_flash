@@ -3,6 +3,7 @@ import subprocess
 import sys
 from os import getcwd, sep
 from threading import Thread
+from tkinter import ttk
 
 from ttkbootstrap.constants import *
 from tkinter import *
@@ -71,9 +72,17 @@ class Center_Show(object):
 class FlashTool(Tk):
     def __init__(self):
         super().__init__()
+        self.flash_cz = IntVar()
+        self.flash_cz.set(1)
         self.code = self.get_code()
         self.title('MIO-KITCHEN-FLASH-TOOL')
         self.sub_win = LabelFrame(self, text='功能')
+        self.notepad = ttk.Notebook(self.sub_win)
+        self.notepad.pack(fill=BOTH)
+        self.flash = ttk.Frame(self.notepad)
+        self.notepad.add(self.flash, text="刷机")
+        self.driver = ttk.Frame(self.notepad)
+        self.notepad.add(self.driver, text="安装驱动")
         self.log_win = LabelFrame(self, text='日志')
         self.log = Text(self.log_win)
         self.init_log()
@@ -100,13 +109,19 @@ class FlashTool(Tk):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
 
     def init_sub_my_rom(self):
-        frame = LabelFrame(self.sub_win, text="ROM信息")
-        Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 20)).pack()
+        frame = LabelFrame(self.flash, text="ROM信息")
+        Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 15)).pack()
         frame.pack(padx=5, pady=5)
 
     def init_sub_official_rom(self):
-        frame = LabelFrame(self.sub_win, text="ROM信息")
-
+        frame = LabelFrame(self.flash, text="ROM信息")
+        Label(frame, text=f"小米官方ROM", font=(None, 15)).pack()
+        frame.pack(padx=5, pady=5)
+        frame = LabelFrame(self.flash, text="刷机选项")
+        cs = 0
+        for v in ['删除全部数据并刷机', '保留用户数据并刷机', '删除全部数据并刷机和上锁BL']:
+            cs += 1
+            ttk.Radiobutton(frame, text=v, variable=self.flash_cz, value=cs).pack(side=TOP, padx=2, pady=2)
         frame.pack(padx=5, pady=5)
 
     def init_log(self):
