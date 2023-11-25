@@ -105,6 +105,8 @@ class FlashTool(Tk):
         self.code = self.get_code()
         self.title('MIO-KITCHEN-FLASH-TOOL')
         self.patch_boot = IntVar()
+        self.device = StringVar()
+        self.device.set("Unknown")
         self.sub_win = LabelFrame(self, text='功能')
         self.notepad = ttk.Notebook(self.sub_win)
         self.notepad.pack(fill=BOTH, expand=True)
@@ -147,6 +149,7 @@ class FlashTool(Tk):
         Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
         frame = LabelFrame(self.flash, text="设备信息")
+        Label(frame, textvariable=self.device, font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
         frame = LabelFrame(self.flash, text="刷机选项")
         Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0,
@@ -157,6 +160,9 @@ class FlashTool(Tk):
     def init_sub_official_rom(self):
         frame = LabelFrame(self.flash, text="ROM信息")
         Label(frame, text=f"小米官方ROM", font=(None, 15)).pack()
+        frame.pack(padx=5, pady=5)
+        frame = LabelFrame(self.flash, text="设备信息")
+        Label(frame, textvariable=self.device, font=(None, 15)).pack(padx=5, pady=5)
         frame.pack(padx=5, pady=5)
         frame = LabelFrame(self.flash, text="刷机选项")
         Checkbutton(frame, text="修补Boot", variable=self.patch_boot, onvalue=1, offvalue=0, style='Switch.TCheckbutton').pack(padx=2, pady=2, side=BOTTOM)
@@ -180,6 +186,9 @@ class FlashTool(Tk):
 
     def flash_my_rom(self):
         pass
+    def get_device_info(self):
+        pass
+
 
 
 if __name__ == '__main__':
