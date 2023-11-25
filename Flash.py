@@ -195,7 +195,8 @@ class FlashTool(Tk):
         self.flash_button.configure(state='disabled', text="正在等待设备")
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
-        call("fastboot devices")
+        device_id = run_command("fastboot devices").strip().split()[0]
+        print(f"发现设备:{device_id}")
         try:
             self.get_device_info()
         except ValueError as e:
@@ -208,7 +209,8 @@ class FlashTool(Tk):
         self.flash_button.configure(state='disabled', text="正在等待设备")
         for i in self.frame.winfo_children():
             i.configure(state='disabled')
-        call("fastboot devices")
+        device_id = run_command("fastboot devices").strip().split()[0]
+        print(f"发现设备:{device_id}")
         try:
             self.get_device_info()
         except ValueError as e:
