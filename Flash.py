@@ -9,6 +9,7 @@ import sv_ttk
 from tkinter import *
 from tkinter.ttk import *
 import zipfile
+
 osname = os.name
 bin_dir = os.path.join(os.getcwd(), 'bin')
 if osname == 'nt':
@@ -250,7 +251,8 @@ class FlashTool(Tk):
                     print(f"正在刷入：{f}")
                     if f.endswith('.img'):
                         if self.slot.get() == 2 or self.slot.get() > 2:
-                            if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
+                            if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(
+                                    f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
                                 if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
                                     print("失败!")
                         else:
@@ -261,10 +263,18 @@ class FlashTool(Tk):
                         f = f[:-4]
                         if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
                             if self.slot.get() == 2 or self.slot.get() > 2:
-                                if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
+                                if call(f'fastboot flash {f.split(".")[0]}_a images{os.sep}{f}') or call(
+                                        f'fastboot flash {f.split(".")[0]}_b images{os.sep}{f}'):
                                     print("失败!")
                             else:
                                 print("失败!")
+            if self.sweep_data:
+                call('fastboot erase userdata')
+                call('fastboot erase userdata')
+            if self.slot.get() == 2 or self.slot.get() > 2:
+                call('fastboot set_active a')
+            call('fastboot reboot')
+            print("刷入完成！")
 
 
         else:
