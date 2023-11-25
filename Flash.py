@@ -71,16 +71,20 @@ class Center_Show(object):
 class FlashTool(Tk):
     def __init__(self):
         super().__init__()
+        self.code = self.get_code()
         self.title('MIO-KITCHEN-FLASH-TOOL')
         self.sub_win = LabelFrame(self, text='功能')
         self.log_win = LabelFrame(self, text='日志')
         self.log = Text(self.log_win)
         self.init_log()
-        self.init_sub()
+        if self.code:
+            self.init_sub_my_rom()
+        else:
+            self.init_sub_official_rom()
         self.controls()
         Center_Show(self)
-        self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
         self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
+        self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
         print("欢迎！")
 
     @staticmethod
@@ -95,8 +99,14 @@ class FlashTool(Tk):
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
 
-    def init_sub(self):
-        frame = LabelFrame(self.sub_win)
+    def init_sub_my_rom(self):
+        frame = LabelFrame(self.sub_win, text="ROM信息")
+        Label(frame, text=f"此ROM只适用于{self.code}", font=(None, 20)).pack()
+        frame.pack(padx=5, pady=5)
+
+    def init_sub_official_rom(self):
+        frame = LabelFrame(self.sub_win, text="ROM信息")
+
         frame.pack(padx=5, pady=5)
 
     def init_log(self):
