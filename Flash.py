@@ -1,9 +1,10 @@
 import os
 import subprocess
+import sys
 from os import getcwd, sep
 from threading import Thread
 
-import sv_ttk
+from ttkbootstrap.constants import *
 from tkinter import *
 from tkinter.ttk import *
 
@@ -70,12 +71,29 @@ class FlashTool(Tk):
     def __init__(self):
         super().__init__()
         self.title('MIO-KITCHEN-FLASH-TOOL')
-        sv_ttk.use_dark_theme()
+        self.sub_win = LabelFrame(self, text='功能')
+        self.log_win = LabelFrame(self, text='日志')
+        self.log = Text(self.log_win)
+        self.init_log()
+        self.init_sub()
         self.controls()
         Center_Show(self)
+        self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
+        self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
 
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
+
+    def init_sub(self):
+        pass
+
+    def init_log(self):
+        self.log.pack(padx=5, pady=5)
+        frame = Frame(self.log_win)
+        Button(frame, text='清空', command=lambda: cz(self.log.delete, 1.0, END)).pack(side=LEFT, padx=5, pady=5)
+        frame.pack(fill=X, side=BOTTOM)
+        sys.stdout = StdoutRedirector(self.log)
+        sys.stderr = StdoutRedirector(self.log)
 
 
 if __name__ == '__main__':
