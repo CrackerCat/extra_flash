@@ -241,6 +241,10 @@ class FlashTool(Tk):
             self.get_device_info()
         except ValueError as e:
             print(e.__str__())
+        if self.device_code == self.code:
+            print("代号正确，开始刷入")
+        else:
+            print(f'此ROM是为 {self.code} 制作，但你的设备是 {self.device_code}')
         self.enable()
 
     def get_device_info(self):
