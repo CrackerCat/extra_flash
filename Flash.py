@@ -82,6 +82,15 @@ class FlashTool(Tk):
         self.log_win.pack(fill=BOTH, side=LEFT, pady=5, padx=5)
         self.sub_win.pack(fill=BOTH, side=LEFT, expand=True, padx=5)
 
+    @staticmethod
+    def get_code():
+        right_code = os.path.join(bin_dir, 'right_device')
+        if os.path.exists(right_code):
+            with open(right_code, 'r', encoding='gbk', newline='\n') as f:
+                return f.read().strip()
+        else:
+            return None
+
     def controls(self):
         Label(self, text="MIO-KITCHEN-FLASH-TOOL", font=(None, 20)).pack()
 
