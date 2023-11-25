@@ -103,6 +103,7 @@ class FlashTool(Tk):
         self.flash_cz.set(1)
         self.code = self.get_code()
         self.title('MIO-KITCHEN-FLASH-TOOL')
+        self.patch_boot = IntVar()
         self.sub_win = LabelFrame(self, text='功能')
         self.notepad = ttk.Notebook(self.sub_win)
         self.notepad.pack(fill=BOTH, expand=True)
@@ -149,6 +150,7 @@ class FlashTool(Tk):
         frame = LabelFrame(self.flash, text="ROM信息")
         Label(frame, text=f"小米官方ROM", font=(None, 15)).pack()
         frame.pack(padx=5, pady=5)
+        ttk.Checkbutton(frame, text="修补Boot", textvariable=self.patch_boot, onvalue=1, offvalue=0).pack(padx=2, pady=2)
         frame = LabelFrame(self.flash, text="刷机选项")
         cs = 0
         for v in ['删除全部数据并刷机', '保留用户数据并刷机', '删除全部数据并刷机和上锁BL']:
