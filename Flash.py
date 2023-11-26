@@ -295,6 +295,14 @@ class FlashTool(Tk):
         self.device_code.set(device)
         self.slot.set(int(lot_count))
 
+    def command(self, func):
+        def wrapper(*args, **kwargs):
+            self.disable()
+            func(*args, **kwargs)
+            self.enable()
+
+        return wrapper
+
 
 if __name__ == '__main__':
     app = FlashTool()
