@@ -303,6 +303,7 @@ class FlashTool(Tk):
             self.enable()
             print("未发现设备")
             return
+        print(f"正在执行:{command}")
         cz(call, command)
         self.enable()
 
