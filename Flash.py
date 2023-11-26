@@ -151,7 +151,7 @@ class FlashTool(Tk):
 
     def init_fast_cmd(self):
         Label(self.fast_cmd, text="快捷命令", font=(None, 20)).pack(padx=5, pady=5)
-        Button(self.fast_cmd, text='FB重启手机', width=20, command=lambda: cz(call, 'fastboot reboot')).pack(padx=5,
+        Button(self.fast_cmd, text='FB重启手机', width=20, command=lambda: cz(self.command, 'fastboot reboot')).pack(padx=5,
                                                                                                              pady=5)
 
     def controls(self):
@@ -295,13 +295,16 @@ class FlashTool(Tk):
         self.device_code.set(device)
         self.slot.set(int(lot_count))
 
-    def command(self, func):
-        def wrapper(*args, **kwargs):
-            self.disable()
-            func(*args, **kwargs)
+    def command(self, command):
+        self.disable()
+        try:
+            run_command("fastboot devices").strip().split()[0]
+        except IndexError:
             self.enable()
-
-        return wrapper
+            print("未发现设备")
+            return
+        cz(call, command)
+        self.enable()
 
 
 if __name__ == '__main__':
