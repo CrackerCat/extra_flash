@@ -12,6 +12,7 @@ import zipfile
 
 osname = os.name
 bin_dir = os.path.join(os.getcwd(), 'bin')
+local = os.getcwd()
 if osname == 'nt':
     from ctypes import windll
 
@@ -259,7 +260,10 @@ class FlashTool(Tk):
                             if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
                                 print("失败!")
                     elif f.endswith('.zst'):
-                        call(f'zstd --rm -d images/{f} -o images/{f[:-4]}')
+                        if not os.path.exists(os.path.join(local, "images", f[:-4])):
+                            call(f'zstd --rm -d images/{f} -o images/{f[:-4]}')
+                        else:
+                            print(f"{f[:-4]} 已存在，跳过解包")
                         f = f[:-4]
                         if call(f'fastboot flash {f.split(".")[0]} images{os.sep}{f}'):
                             if self.slot.get() == 2 or self.slot.get() > 2:
